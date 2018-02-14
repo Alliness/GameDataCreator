@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>alliness</groupId>
-    <artifactId>grandis</artifactId>
+    <artifactId>jsonDataCreator</artifactId>
     <version>0.0.1</version>
 
     <build>
