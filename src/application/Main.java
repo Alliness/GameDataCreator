@@ -15,11 +15,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root  = FXMLLoader.load(getClass().getResource("controllers/Create.fxml"));
+        Parent root  = FXMLLoader.load(getClass().getResource("resources/fxml/main.fxml"));
         Scene  scene = new Scene(root, 1024, 768); // todo move width and height to config
         scene.getStylesheets().add(getClass().getResource("resources/main.css").toExternalForm());
         primaryStage.setTitle("Json Game Creator");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(true);
         primaryStage.show();
         App.getInstance().setStage(primaryStage);
     }

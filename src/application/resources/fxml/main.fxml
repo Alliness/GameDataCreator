@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0">
+          <top>
+              <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+                 <menus>
+                     <Menu mnemonicParsing="false" text="File">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                     </Menu>
+                     <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                     </Menu>
+                     <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                            <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                     </Menu>
+                 </menus>
+              </MenuBar>
+          </top>
+          <right>
+              <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="743.0" prefWidth="717.0" BorderPane.alignment="CENTER">
+               <children>
+                  <fx:include source="field.fxml" />
+               </children>
+            </Pane>
+          </right>
+          <left>
+              <Pane prefHeight="743.0" prefWidth="512.0" BorderPane.alignment="CENTER">
+                 <children>
+                     <TreeView fx:id="tree" maxHeight="740.0" maxWidth="512.0" minHeight="375.0" minWidth="300.0" prefHeight="740.0" prefWidth="499.0">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TreeView>
+                 </children>
+              </Pane>
+          </left>
+      </BorderPane>
+   </children>
+</AnchorPane>

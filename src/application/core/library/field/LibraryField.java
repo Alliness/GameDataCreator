@@ -1,7 +1,7 @@
 package application.core.library.field;
 
-import application.core.library.field.options.LibraryOptionsEnum;
-import application.core.library.field.types.LibraryType;
+import application.core.library.field.options.LibraryFieldOptionEnum;
+import application.core.library.field.types.FieldType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +13,18 @@ public class LibraryField {
 
     private String name;
 
-    private LibraryType type;
+    private FieldType type;
 
-    private List<LibraryOptionsEnum> options;
+    private List<LibraryFieldOptionEnum> options;
 
 
-    public LibraryField(String name, LibraryType type) {
+    public LibraryField(String name, FieldType type) {
         this.name = name;
         this.type = type;
         options = new ArrayList<>();
     }
 
-    public LibraryField(String name, LibraryType type, List<LibraryOptionsEnum> options) {
+    public LibraryField(String name, FieldType type, List<LibraryFieldOptionEnum> options) {
         this.name = name;
         this.type = type;
         this.options = options;
@@ -32,9 +32,9 @@ public class LibraryField {
 
     /**
      * add option to field
-     * @param option {@link LibraryOptionsEnum}
+     * @param option {@link LibraryFieldOptionEnum}
      */
-    public void addOption(LibraryOptionsEnum option){
+    public void addOption(LibraryFieldOptionEnum option){
         options.add(option);
     }
 
@@ -49,17 +49,17 @@ public class LibraryField {
 
     /**
      *
-     * @return library type {@link LibraryType}
+     * @return library type {@link FieldType}
      */
-    public LibraryType getType() {
+    public FieldType getType() {
         return type;
     }
 
     /**
      *
-     * @return list of {@link LibraryOptionsEnum}
+     * @return list of {@link LibraryFieldOptionEnum}
      */
-    public List<LibraryOptionsEnum> getOptions() {
+    public List<LibraryFieldOptionEnum> getOptions() {
         return options;
     }
 }
