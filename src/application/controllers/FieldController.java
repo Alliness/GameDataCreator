@@ -1,11 +1,11 @@
 package application.controllers;
 
+import application.App;
 import application.core.library.field.options.LibraryFieldOptionEnum;
 import application.core.library.field.types.FieldTypeEnum;
 import application.dto.FieldDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -14,6 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class FieldController implements Initializable {
         fieldTypes.setValue(obsList.get(0));
         selectedOpts = new ArrayList<>();
         createBoxes();
+        button.setAlignment(Pos.CENTER_RIGHT);
     }
 
     private void createBoxes() {
@@ -51,6 +53,7 @@ public class FieldController implements Initializable {
             CheckBox box = new CheckBox(opt.getText());
             box.setText(opt.getText());
             box.setOnAction(event -> boxClicked(box));
+            box.setMinWidth(40);
             options.getChildren().add(box);
         }
     }
