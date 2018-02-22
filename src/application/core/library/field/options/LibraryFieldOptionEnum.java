@@ -15,6 +15,15 @@ public enum LibraryFieldOptionEnum {
         this.byDefault = byDefault;
     }
 
+    public static LibraryFieldOptionEnum getByText(String text){
+        for (LibraryFieldOptionEnum libraryFieldOptionEnum : values()) {
+            if(libraryFieldOptionEnum.text.equals(text)){
+                return libraryFieldOptionEnum;
+            }
+        }
+        return null;
+    }
+
     public boolean isByDefault() {
         return byDefault;
     }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="field" prefHeight="48.0" prefWidth="512.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.FieldController">
+    <children>
+        <TextField fx:id="name" layoutX="14.0" layoutY="12.0" />
+        <ChoiceBox fx:id="fieldTypes" layoutX="165.0" layoutY="12.0" prefWidth="150.0" />
+        <HBox fx:id="options" alignment="CENTER_LEFT" layoutX="326.0" layoutY="4.0" minHeight="40.0" minWidth="10.0" prefHeight="40.0" prefWidth="10.0" />
+        <Button fx:id="button" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="460.0" layoutY="12.0" mnemonicParsing="false" onAction="#Add" text="Add" />
+    </children>
+</Pane>

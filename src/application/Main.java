@@ -15,7 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root  = FXMLLoader.load(getClass().getResource("resources/fxml/main.fxml"));
+        Parent root  = FXMLLoader.load(getClass().getResource("resources/fxml/Main.fxml"));
         Scene  scene = new Scene(root, 1024, 768); // todo move width and height to config
         scene.getStylesheets().add(getClass().getResource("resources/main.css").toExternalForm());
         primaryStage.setTitle("Json Game Creator");
@@ -24,5 +24,6 @@ public class Main extends Application {
         primaryStage.show();
         App.getInstance().setStage(primaryStage);
         App.getInstance().setScene(scene);
+
     }
 }

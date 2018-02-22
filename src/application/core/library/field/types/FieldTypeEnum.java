@@ -5,18 +5,21 @@ import java.util.List;
 
 public enum FieldTypeEnum {
 
-    EMPTY("Empty"),
-    INT("Integer"),
-    FLOAT("Float"),
-    DOUBLE("Double"),
-    STRING("String"),
-    ARRAY("Array"),
-    REFERENCE("Reference");
+    EMPTY("Empty", false),
+    INT("Integer", false),
+    FLOAT("Float", false),
+    DOUBLE("Double", false),
+    STRING("String", false),
+    ARRAY("Array", true),
+    REFERENCE("Reference", true);
 
     String name;
+    private boolean arrayLike;
 
-    FieldTypeEnum(String name) {
+    FieldTypeEnum(String name, boolean arrayLike) {
+
         this.name = name;
+        this.arrayLike = arrayLike;
     }
 
     public String getName() {
@@ -30,5 +33,18 @@ public enum FieldTypeEnum {
             list.add(fieldTypeEnum.name);
         }
         return list;
+    }
+
+    public static FieldTypeEnum getByName(String name) {
+        for (FieldTypeEnum fieldTypeEnum : values()) {
+            if (fieldTypeEnum.name.equals(name)) {
+                return fieldTypeEnum;
+            }
+        }
+        return null;
+    }
+
+    public boolean isArrayLike() {
+        return arrayLike;
     }
 }

@@ -1,27 +1,23 @@
 package application.controllers;
 
-import application.App;
 import application.core.library.field.options.LibraryFieldOptionEnum;
 import application.core.library.field.types.FieldTypeEnum;
 import application.dto.FieldDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.Pane;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class FieldController implements Initializable {
+public class FieldController {
 
 
     @FXML
@@ -31,21 +27,32 @@ public class FieldController implements Initializable {
     public HBox options;
 
     @FXML
-    public ChoiceBox<String> fieldTypes;
+    public ChoiceBox<FieldTypeEnum> fieldTypes;
 
     @FXML
     public Button button;
 
-    private List<String> selectedOpts;
+    @FXML
+    public Pane field;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> obsList = FXCollections.observableArrayList(FieldTypeEnum.names());
+    private List<LibraryFieldOptionEnum> selectedOpts;
+
+    private MainController main;
+
+    @FXML
+    private void initialize() {
+        ObservableList<FieldTypeEnum> obsList = FXCollections.observableArrayList(FieldTypeEnum.values());
         fieldTypes.setItems(obsList);
-        fieldTypes.setValue(obsList.get(0));
+        fieldTypes.setValue(FieldTypeEnum.EMPTY);
         selectedOpts = new ArrayList<>();
         createBoxes();
         button.setAlignment(Pos.CENTER_RIGHT);
+
+    }
+
+    void initializeParent(MainController mainController) {
+        this.main = mainController;
+        field.prefWidthProperty().bind(mainController.getPane().widthProperty());
     }
 
     private void createBoxes() {
@@ -60,13 +67,14 @@ public class FieldController implements Initializable {
 
     /**
      * handler for box event
+     *
      * @param box clickedBox
      */
     private void boxClicked(CheckBox box) {
         if (box.isSelected()) {
-            selectedOpts.add(box.getText());
+            selectedOpts.add(LibraryFieldOptionEnum.getByText(box.getText()));
         } else {
-            selectedOpts.removeIf(s -> s.equals(box.getText()));
+            selectedOpts.removeIf(s -> s.equals(LibraryFieldOptionEnum.getByText(box.getText())));
         }
     }
 
@@ -82,11 +90,19 @@ public class FieldController implements Initializable {
                 name.getText(),
                 fieldTypes.getValue()
         );
+
+        if (dto.getName().equals("")) {
+            System.out.println("Empty Field Name");
+            return;
+            //todo add notice popup;
+        }
         //store dto in some local storage?
 
-        //map dto to fxml treeElement
+        //validate @isReference
 
+
+        //map dto to fxml treeElement
+        main.getTreeController().addItem(dto);
         //move dto to treeView
     }
-
 }
