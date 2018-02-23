@@ -43,7 +43,7 @@ public class FieldController {
     private void initialize() {
         ObservableList<FieldTypeEnum> obsList = FXCollections.observableArrayList(FieldTypeEnum.values());
         fieldTypes.setItems(obsList);
-        fieldTypes.setValue(FieldTypeEnum.EMPTY);
+        fieldTypes.setValue(FieldTypeEnum.OBJECT);
         selectedOpts = new ArrayList<>();
         createBoxes();
         button.setAlignment(Pos.CENTER_RIGHT);
@@ -82,7 +82,6 @@ public class FieldController {
      * handler for add button
      */
     public void Add() {
-
 
         //create dto form field data
         FieldDTO dto = new FieldDTO(

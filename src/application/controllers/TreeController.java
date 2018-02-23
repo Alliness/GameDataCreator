@@ -3,9 +3,8 @@ package application.controllers;
 import application.core.library.field.types.FieldTypeEnum;
 import application.core.library.tree.JsonTreeItem;
 import application.dto.FieldDTO;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
@@ -18,25 +17,32 @@ public class TreeController {
 
     @FXML
     private void initialize() {
-        TreeItem<JsonTreeItem> root = new TreeItem<>(
-                new JsonTreeItem(
-                        new FieldDTO(null, "name", FieldTypeEnum.REFERENCE)
-                )); // todo use constructor text input
+        JsonTreeItem           rootItem = new JsonTreeItem(new FieldDTO(null, "name", FieldTypeEnum.OBJECT));
+        rootItem.getRemoveButton().setDisable(true);
+        TreeItem<JsonTreeItem> root     = new TreeItem<>(rootItem);
         root.setExpanded(true);
         tree.setRoot(root);
     }
 
     void initializeParent(MainController mainController) {
         this.main = mainController;
-        tree.prefWidthProperty().addListener((observable, oldValue, newValue) -> {
-
-        });
     }
 
-    TreeItem<JsonTreeItem> addItem(FieldDTO dto) {
-
+    void addItem(FieldDTO dto) {
         //take selected node
         TreeItem<JsonTreeItem> selected = tree.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            //todo create notice
+            return;
+        }
+        if (selected.getValue().getDTO().getType().isArrayLike()) {
+            TreeItem<JsonTreeItem> treeItem = new TreeItem<>(new JsonTreeItem(dto));
+            treeItem.getValue().getRemoveButton().setOnAction(event -> removeItem(tree.getRoot(), treeItem));
+            selected.getChildren().add(treeItem);
+        } else {
+            System.out.println("unable add child to non-arrayLike object");
+            //todo create notification
+        }
 
 
         //set is isArrayLike?
@@ -45,9 +51,16 @@ public class TreeController {
         }
 
         //add new node to selected node
-        TreeItem<JsonTreeItem> treeItem = new TreeItem<>(new JsonTreeItem(dto));
-        selected.getChildren().add(treeItem);
+    }
 
-        return null;
+    private void removeItem(TreeItem<JsonTreeItem> level, TreeItem<JsonTreeItem> target) {
+        for (TreeItem<JsonTreeItem> child : level.getChildren()) {
+            if (child.equals(target)) {
+                level.getChildren().remove(target);
+                return;
+            } else {
+                removeItem(child, target);
+            }
+        }
     }
 }

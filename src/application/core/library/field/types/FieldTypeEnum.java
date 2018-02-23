@@ -5,13 +5,12 @@ import java.util.List;
 
 public enum FieldTypeEnum {
 
-    EMPTY("Empty", false),
-    INT("Integer", false),
-    FLOAT("Float", false),
-    DOUBLE("Double", false),
+    NULL("Null", false),
+    NUMBER("Number", false),
     STRING("String", false),
+    BOOL("Boolean", false),
     ARRAY("Array", true),
-    REFERENCE("Reference", true);
+    OBJECT("Object", true);
 
     String name;
     private boolean arrayLike;
@@ -42,6 +41,11 @@ public enum FieldTypeEnum {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public boolean isArrayLike() {

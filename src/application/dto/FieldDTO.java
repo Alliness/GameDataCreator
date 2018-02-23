@@ -3,6 +3,7 @@ package application.dto;
 import application.core.library.field.options.LibraryFieldOptionEnum;
 import application.core.library.field.types.FieldTypeEnum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FieldDTO extends Serializable {
@@ -31,6 +32,9 @@ public class FieldDTO extends Serializable {
     }
 
     public List<LibraryFieldOptionEnum> getOpts() {
+        if(opts == null){
+            opts = new ArrayList<>();
+        }
         return this.opts;
     }
 

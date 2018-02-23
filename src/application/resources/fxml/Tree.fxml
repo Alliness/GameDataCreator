@@ -3,4 +3,4 @@
 <?import javafx.scene.control.TreeView?>
 
 
-<TreeView fx:id="tree" prefHeight="768.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TreeController"/>
+<TreeView fx:id="tree" prefHeight="740.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TreeController"/>

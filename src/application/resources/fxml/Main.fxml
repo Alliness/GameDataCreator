@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
-    <AnchorPane prefHeight="756.0" prefWidth="512.0">
-        <fx:include fx:id="tree" source="Tree.fxml"/>
+   <AnchorPane layoutY="2.0" prefHeight="24.0" prefWidth="1024.0">
+      <children>
+         <Label layoutX="498.0" layoutY="3.0" text="Library Creator" textAlignment="CENTER">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+      </children>
+   </AnchorPane>
+    <AnchorPane layoutY="28.0" prefHeight="740.0" prefWidth="512.0">
+        <fx:include fx:id="tree" source="Tree.fxml" />
     </AnchorPane>
-    <AnchorPane layoutX="512.0" prefHeight="83.0" prefWidth="512.0">
+    <AnchorPane layoutX="512.0" layoutY="28.0" prefHeight="83.0" prefWidth="512.0" style="-fx-background-color: white;">
         <AnchorPane layoutY="27.0" prefHeight="84.0" prefWidth="512.0">
             <fx:include fx:id="field" source="Field.fxml" />
         </AnchorPane>
