@@ -1,0 +1,42 @@
+{
+  "test": {
+    "str": {
+      "params": {
+        "ref": null,
+        "opts": [],
+        "name": "str",
+        "type": "STRING"
+      }
+    },
+    "test": {
+      "str": {
+        "params": {
+          "ref": null,
+          "opts": [],
+          "name": "str",
+          "type": "STRING"
+        }
+      },
+      "test23": {
+        "params": {
+          "ref": null,
+          "opts": [],
+          "name": "test23",
+          "type": "OBJECT"
+        }
+      },
+      "params": {
+        "ref": null,
+        "opts": [],
+        "name": "test",
+        "type": "OBJECT"
+      }
+    },
+    "params": {
+      "ref": null,
+      "opts": [],
+      "name": "test",
+      "type": "OBJECT"
+    }
+  }
+}

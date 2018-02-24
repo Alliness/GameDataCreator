@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="field" prefHeight="48.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.FieldController">
+<Pane fx:id="field" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.FieldController">
     <children>
         <TextField fx:id="name" layoutX="14.0" layoutY="12.0" />
         <ChoiceBox fx:id="fieldTypes" layoutX="165.0" layoutY="12.0" prefWidth="150.0" />

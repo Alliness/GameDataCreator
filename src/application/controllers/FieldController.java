@@ -7,10 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -44,6 +43,12 @@ public class FieldController {
         ObservableList<FieldTypeEnum> obsList = FXCollections.observableArrayList(FieldTypeEnum.values());
         fieldTypes.setItems(obsList);
         fieldTypes.setValue(FieldTypeEnum.OBJECT);
+
+        name.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                Add();
+            }
+        });
         selectedOpts = new ArrayList<>();
         createBoxes();
         button.setAlignment(Pos.CENTER_RIGHT);
@@ -81,6 +86,7 @@ public class FieldController {
     /**
      * handler for add button
      */
+    @FXML
     public void Add() {
 
         //create dto form field data
@@ -91,9 +97,8 @@ public class FieldController {
         );
 
         if (dto.getName().equals("")) {
-            System.out.println("Empty Field Name");
+            main.printMessage("Empty field name");
             return;
-            //todo add notice popup;
         }
         //store dto in some local storage?
 
@@ -102,6 +107,5 @@ public class FieldController {
 
         //map dto to fxml treeElement
         main.getTreeController().addItem(dto);
-        //move dto to treeView
     }
 }
