@@ -2,6 +2,7 @@ package application.dto;
 
 import application.core.library.field.options.LibraryFieldOptionEnum;
 import application.core.library.field.types.FieldTypeEnum;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class FieldDTO extends Serializable {
         this.type = type;
         this.ref = ref;
     }
+
 
     public String getRef() {
         return this.ref;

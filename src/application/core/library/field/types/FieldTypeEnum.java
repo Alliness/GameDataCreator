@@ -10,7 +10,8 @@ public enum FieldTypeEnum {
     STRING("String", false),
     BOOL("Boolean", false),
     ARRAY("Array", true),
-    OBJECT("Object", true);
+    OBJECT("Object", true),
+    REFERENCE("Reference", true);
 
     String name;
     private boolean arrayLike;

@@ -2,18 +2,22 @@ package application.controllers;
 
 import application.core.library.field.options.LibraryFieldOptionEnum;
 import application.core.library.field.types.FieldTypeEnum;
+import application.core.utils.Dir;
+import application.core.utils.FReader;
 import application.dto.FieldDTO;
+import application.dto.Serializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FieldController {
@@ -26,7 +30,7 @@ public class FieldController {
     public HBox options;
 
     @FXML
-    public ChoiceBox<FieldTypeEnum> fieldTypes;
+    public ChoiceBox<Object> fieldTypes;
 
     @FXML
     public Button button;
@@ -36,16 +40,22 @@ public class FieldController {
 
     private List<LibraryFieldOptionEnum> selectedOpts;
 
-    private MainController main;
+    private MainController              main;
+    private HashMap<String, JSONObject> refs;
 
     @FXML
     private void initialize() {
-        ObservableList<FieldTypeEnum> obsList = FXCollections.observableArrayList(FieldTypeEnum.values());
+        ObservableList<Object> obsList = FXCollections.observableArrayList(FieldTypeEnum.values());
+        // append references
+
+        refs = FReader.readAll(Dir.LIBS);
+
+        refs.forEach((s, jsonObject) -> obsList.add(s));
         fieldTypes.setItems(obsList);
         fieldTypes.setValue(FieldTypeEnum.OBJECT);
 
         name.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 Add();
             }
         });
@@ -88,18 +98,34 @@ public class FieldController {
      */
     @FXML
     public void Add() {
+        try {
+            FieldDTO dto = new FieldDTO(
+                    selectedOpts,
+                    name.getText(),
+                    (FieldTypeEnum) fieldTypes.getValue()
+            );
 
-        //create dto form field data
-        FieldDTO dto = new FieldDTO(
-                selectedOpts,
-                name.getText(),
-                fieldTypes.getValue()
-        );
+            if (dto.getName().equals("")) {
+                main.printMessage("Empty field name");
+                return;
+            }
+            main.getTreeController().addItem(dto);
+        } catch (ClassCastException e) {
 
-        if (dto.getName().equals("")) {
-            main.printMessage("Empty field name");
-            return;
+            String     parentName = (String) fieldTypes.getValue();
+            JSONObject json       = refs.get(parentName);
+            FieldDTO   parentDTO  = new FieldDTO(null, parentName, FieldTypeEnum.REFERENCE);
+            parentDTO.setRef(parentName);
+
+            main.getTreeController().addItem(parentDTO);
+
+            // iterate object to set children
+            for (String key : json.keySet()) {
+                referenceTreeAppender(json.getJSONObject(key));
+            }
         }
+        //create dto form field data
+
 
         //store dto in some local storage?
 
@@ -107,6 +133,19 @@ public class FieldController {
 
 
         //map dto to fxml treeElement
-        main.getTreeController().addItem(dto);
     }
+
+    private void referenceTreeAppender(JSONObject object) {
+        for (String s : object.keySet()) {
+            if (s.equals("$params")) {
+                JSONObject obj = object.getJSONObject(s);
+                FieldDTO   dto = Serializable.deserialize(obj, FieldDTO.class);
+                main.getTreeController().addItem(dto);
+            } else {
+                referenceTreeAppender(object.getJSONObject(s));
+            }
+        }
+    }
+
+
 }

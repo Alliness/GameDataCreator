@@ -4,8 +4,10 @@ import application.core.library.field.types.FieldTypeEnum;
 import application.core.library.tree.JsonTreeItem;
 import application.core.utils.JSONUtils;
 import application.dto.FieldDTO;
+import application.dto.Serializable;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import netscape.javascript.JSUtil;
@@ -29,7 +31,8 @@ public class TreeController {
     }};
 
     @FXML
-    private void initialize() {}
+    private void initialize() {
+    }
 
     /**
      * main controller setter
@@ -66,6 +69,7 @@ public class TreeController {
             }
         }
     }
+
 
     /**
      * tree Item creator/appender
@@ -111,6 +115,11 @@ public class TreeController {
         treeItem.setExpanded(true);
         //append to parent
         selected.getChildren().add(treeItem);
+        if (dto.getType().isArrayLike()) {
+            MultipleSelectionModel msm = tree.getSelectionModel();
+            int                    row = tree.getRow(treeItem);
+            msm.select(row);
+        }
         main.setViewText(JSONUtils.pretty(skeleton));
 
     }
