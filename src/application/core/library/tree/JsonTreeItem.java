@@ -37,6 +37,7 @@ public class JsonTreeItem extends HBox {
         this.getChildren().addAll(label, type);
         label.baseTextProperty().addListener((observable, oldValue, newValue) -> {
             MainController main = App.getInstance().getController();
+            dto.setName(newValue); //todo fix bug with renaming to exist in hierarchy
             main.getTreeController().handler(new Event(TreeItem.TreeModificationEvent.ANY));
         });
         if (dto.getOpts().size() > 0) {
@@ -69,7 +70,7 @@ public class JsonTreeItem extends HBox {
     }
 
     public String getName() {
-        return label.getText();
+        return getDTO().getName();
     }
 }
 

@@ -8,8 +8,11 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import org.json.JSONArray;
+import netscape.javascript.JSUtil;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TreeController {
 
@@ -17,19 +20,16 @@ public class TreeController {
 
     @FXML
     public  TreeView<JsonTreeItem> tree;
-    private JsonTreeItem           rootItem;
+    private TreeItem<JsonTreeItem> rootItem;
     private JSONObject             skeleton;
 
-    @FXML
-    private void initialize() {
-        rootItem = new JsonTreeItem(new FieldDTO(null, "name", FieldTypeEnum.OBJECT));
-        rootItem.getRemoveButton().setDisable(true);
-        TreeItem<JsonTreeItem> root = new TreeItem<>(rootItem);
-        root.setExpanded(true);
-        root.addEventHandler(TreeItem.TreeModificationEvent.ANY, this::handler);
-        tree.setRoot(root);
+    private static final List<String> allowedEvents = new ArrayList<String>() {{ //tree update events
+        add("ChildrenModificationEvent");
+        add("TreeNotificationEvent");
+    }};
 
-    }
+    @FXML
+    private void initialize() {}
 
     /**
      * main controller setter
@@ -38,27 +38,29 @@ public class TreeController {
      */
     void initializeParent(MainController mainController) {
         this.main = mainController;
-        main.fileName(rootItem.getDTO().getName());
     }
 
     /**
      * tree modification handler for refresh render of current json tree.
      */
     public <E extends Event> void handler(E event) {
-        skeleton = new JSONObject();
-        renderTree(skeleton, tree.getRoot());
-        System.out.println(skeleton);
-//        System.out.println(JSONUtils.pretty(skeleton));
+        if (allowedEvents.contains(event.getEventType().getName())) {
+            skeleton = new JSONObject();
+            renderTree(skeleton, tree.getRoot());
+            main.setViewText(JSONUtils.pretty(skeleton));
+            System.out.println(JSONUtils.pretty(skeleton));
+        }
+
     }
 
     /**
-     * recursive jsontree appender
+     * recursive jsonTree creator
      */
     private void renderTree(JSONObject obj, TreeItem<JsonTreeItem> tree) {
 
         for (TreeItem<JsonTreeItem> item : tree.getChildren()) {
             JsonTreeItem jsonItem = item.getValue();
-            obj.put(jsonItem.getName(), new JSONObject().put("params", jsonItem.getSerializeData()));
+            obj.put(jsonItem.getName(), new JSONObject().put("$params", jsonItem.getSerializeData()));
             if (jsonItem.getDTO().getType().isArrayLike()) {
                 renderTree(obj.getJSONObject(jsonItem.getName()), item);
             }
@@ -71,6 +73,18 @@ public class TreeController {
      * @param dto {@link FieldDTO}
      */
     void addItem(FieldDTO dto) {
+
+        if (rootItem == null) {
+            dto.setType(FieldTypeEnum.OBJECT);
+            JsonTreeItem jsonItem = new JsonTreeItem(dto);
+            jsonItem.getRemoveButton().setDisable(true);
+            rootItem = new TreeItem<>(jsonItem);
+            rootItem.setExpanded(true);
+            rootItem.addEventHandler(TreeItem.TreeModificationEvent.ANY, this::handler);
+            tree.setRoot(rootItem);
+            return;
+        }
+
         //take selected node
         TreeItem<JsonTreeItem> selected = tree.getSelectionModel().getSelectedItem();
 
@@ -81,7 +95,7 @@ public class TreeController {
         }
         //name not exist in hierarchy
         if (itemNameExist(selected, dto.getName())) {
-            main.printMessage("Item already exist in same hierarchy");
+            main.printMessage("Item name already exist in same hierarchy");
             return;
         }
         //if selected item is array-like
@@ -93,17 +107,20 @@ public class TreeController {
         TreeItem<JsonTreeItem> treeItem = new TreeItem<>(new JsonTreeItem(dto));
         //set action on remove
         treeItem.getValue().getRemoveButton().setOnAction(event -> removeItem(tree.getRoot(), treeItem));
+
+        treeItem.setExpanded(true);
         //append to parent
         selected.getChildren().add(treeItem);
+        main.setViewText(JSONUtils.pretty(skeleton));
 
     }
 
     /**
      * check for name in current hierarchy
      */
-    private boolean itemNameExist(TreeItem<JsonTreeItem> selected, String name) {
+    public boolean itemNameExist(TreeItem<JsonTreeItem> selected, String name) {
         for (TreeItem<JsonTreeItem> jsonTreeItemTreeItem : selected.getChildren()) {
-            if (jsonTreeItemTreeItem.getValue().getDTO().getName().equals(name)) {
+            if (jsonTreeItemTreeItem.getValue().getName().equals(name)) {
                 return true;
             }
         }
@@ -129,6 +146,6 @@ public class TreeController {
     }
 
     public String getRootName() {
-        return rootItem.getName();
+        return rootItem.getValue().getName();
     }
 }

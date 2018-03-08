@@ -72,6 +72,8 @@ public class MainController implements Initializable {
         treeController.tree.prefHeightProperty().bind(main.heightProperty());
 
 
+        viewArea.setEditable(false);
+
         saveButton.setOnMouseClicked(event -> {
             saveFileProcess();
         });
@@ -95,14 +97,22 @@ public class MainController implements Initializable {
     private void saveFileProcess() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Save LibraryFile");
-        chooser.setInitialFileName(treeController.getRootName() + ".json");
-        chooser.setInitialDirectory(new File(Dir.LIBS));
-        File file = chooser.showSaveDialog(App.getInstance().getStage());
-        if (file != null) {
-            FWriter.save(getTreeController().getSkeleton().toString(), file);
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Json file(*.json)", "*.json"));
+        try{
+            chooser.setInitialFileName(treeController.getRootName() + ".json");
+            chooser.setInitialDirectory(new File(Dir.LIBS));
+            File file = chooser.showSaveDialog(App.getInstance().getStage());
+            if (file != null) {
+                FWriter.save(getTreeController().getSkeleton().toString(), file);
+            }
+        }catch (NullPointerException e){
+            printMessage("No object to save!");
         }
     }
 
+    public void setViewText(String text){
+        viewArea.setText(text);
+    }
 
     public Pane getPane() {
         return main;

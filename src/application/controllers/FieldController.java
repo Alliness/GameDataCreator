@@ -100,6 +100,7 @@ public class FieldController {
             main.printMessage("Empty field name");
             return;
         }
+
         //store dto in some local storage?
 
         //validate @isReference

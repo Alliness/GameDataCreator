@@ -47,4 +47,19 @@ public class FieldDTO extends Serializable {
         return type;
     }
 
+    public void setOpts(List<LibraryFieldOptionEnum> opts) {
+        this.opts = opts;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(FieldTypeEnum type) {
+        this.type = type;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
 }
