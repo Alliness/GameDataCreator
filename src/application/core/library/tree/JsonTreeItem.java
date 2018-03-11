@@ -1,16 +1,13 @@
 package application.core.library.tree;
 
 import application.App;
-import application.controllers.MainController;
+import application.controllers.structureCreator.MainController;
 import application.dto.FieldDTO;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import org.json.JSONObject;
@@ -25,8 +22,7 @@ public class JsonTreeItem extends HBox {
     private Label         type;
     private Label         opts;
 
-
-    public JsonTreeItem(FieldDTO dto) {
+    public JsonTreeItem(FieldDTO dto, boolean editable) {
         super();
         this.dto = dto;
         this.prefWidth(Double.MAX_VALUE);
@@ -34,21 +30,32 @@ public class JsonTreeItem extends HBox {
         label = new EditableLabel(dto.getName());
         type = new Label(dto.getType().getName());
         label.setStyle("-fx-font-weight:bold");
+
+        if (editable) {
+            label.baseTextProperty().addListener((observable, oldValue, newValue) -> {
+                MainController main = App.getInstance().getController();
+                dto.setName(newValue); //todo fix bug with renaming to exist in hierarchy
+                main.getTreeController().handler(new Event(TreeItem.TreeModificationEvent.ANY));
+            });
+        } else {
+            label.setEditable(false);
+            label.editableProperty().setValue(false);
+        }
+
         this.getChildren().addAll(label, type);
-        label.baseTextProperty().addListener((observable, oldValue, newValue) -> {
-            MainController main = App.getInstance().getController();
-            dto.setName(newValue); //todo fix bug with renaming to exist in hierarchy
-            main.getTreeController().handler(new Event(TreeItem.TreeModificationEvent.ANY));
-        });
+
         if (dto.getOpts().size() > 0) {
             opts = new Label(dto.getOpts().toString());
             this.getChildren().add(opts);
         }
+
         Region region1 = new Region();
         HBox.setHgrow(region1, Priority.ALWAYS);
         remove = new Button("x");
-
         this.getChildren().addAll(region1, remove);
+        if (!editable)
+            getRemoveButton().setDisable(true);
+
 
     }
 
@@ -72,6 +79,7 @@ public class JsonTreeItem extends HBox {
     public String getName() {
         return getDTO().getName();
     }
+
 }
 
 

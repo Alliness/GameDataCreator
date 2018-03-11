@@ -1,16 +1,14 @@
-package application.controllers;
+package application.controllers.structureCreator;
 
 import application.core.library.field.types.FieldTypeEnum;
 import application.core.library.tree.JsonTreeItem;
 import application.core.utils.JSONUtils;
 import application.dto.FieldDTO;
-import application.dto.Serializable;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import netscape.javascript.JSUtil;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -75,12 +73,13 @@ public class TreeController {
      * tree Item creator/appender
      *
      * @param dto {@link FieldDTO}
+     * @param editable boolean
      */
-    void addItem(FieldDTO dto) {
+    void addItem(FieldDTO dto, boolean editable) {
 
         if (rootItem == null) {
             dto.setType(FieldTypeEnum.OBJECT);
-            JsonTreeItem jsonItem = new JsonTreeItem(dto);
+            JsonTreeItem jsonItem = new JsonTreeItem(dto, editable);
             jsonItem.getRemoveButton().setDisable(true);
             rootItem = new TreeItem<>(jsonItem);
             rootItem.setExpanded(true);
@@ -95,20 +94,26 @@ public class TreeController {
         //selected item not null
         if (selected == null) {
             main.printMessage("Select parent node first!");
-            return;
+            return ;
         }
         //name not exist in hierarchy
         if (itemNameExist(selected, dto.getName())) {
             main.printMessage("Item name already exist in same hierarchy");
-            return;
+            return ;
         }
         //if selected item is array-like
         if (!selected.getValue().getDTO().getType().isArrayLike()) {
             main.printMessage("Unable add child to non-array-like parent");
-            return;
+            return ;
         }
+        //if parent is array, and contains child
+        if (selected.getValue().getDTO().getType().equals(FieldTypeEnum.ARRAY) && selected.getChildren().size() > 0) {
+            main.printMessage("Array can contains only one child type");
+            return ;
+        }
+
         //create new item
-        TreeItem<JsonTreeItem> treeItem = new TreeItem<>(new JsonTreeItem(dto));
+        TreeItem<JsonTreeItem> treeItem = new TreeItem<>(new JsonTreeItem(dto, editable));
         //set action on remove
         treeItem.getValue().getRemoveButton().setOnAction(event -> removeItem(tree.getRoot(), treeItem));
 
@@ -121,7 +126,6 @@ public class TreeController {
             msm.select(row);
         }
         main.setViewText(JSONUtils.pretty(skeleton));
-
     }
 
     /**

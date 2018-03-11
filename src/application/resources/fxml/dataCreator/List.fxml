@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="list" prefHeight="768.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.dataCreator.ListController">
+    <Pane prefHeight="768.0" prefWidth="326.0">
+        <Label alignment="CENTER" prefHeight="33.0" prefWidth="326.0" text="Libraries" textAlignment="CENTER">
+            <font>
+                <Font size="17.0"/>
+            </font>
+        </Label>
+        <ListView fx:id="listView" layoutY="38.0" prefHeight="730.0" prefWidth="326.0"/>
+    </Pane>
+</AnchorPane>

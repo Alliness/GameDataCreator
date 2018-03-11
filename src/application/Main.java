@@ -16,7 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/fxml/Main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/fxml/dataCreator/Main.fxml"));
         Parent     root   = loader.load();
         Scene      scene  = new Scene(root, 1024, 768); // todo move width and height to config
 

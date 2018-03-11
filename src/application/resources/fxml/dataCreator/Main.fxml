@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity"
+      maxWidth="-Infinity"
+      fx:controller="application.controllers.dataCreator.MainController"
+      minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="768.0"
+      prefWidth="1024.0"
+      xmlns="http://javafx.com/javafx/8.0.121"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <SplitPane dividerPositions="0.67" layoutY="-1.0" prefHeight="768.0" prefWidth="1024.0">
+        <fx:include fx:id="data" source="Data.fxml"/>
+        <fx:include fx:id="list" source="List.fxml"/>
+    </SplitPane>
+</Pane>

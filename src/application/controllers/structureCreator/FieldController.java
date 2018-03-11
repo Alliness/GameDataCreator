@@ -1,4 +1,4 @@
-package application.controllers;
+package application.controllers.structureCreator;
 
 import application.core.library.field.options.LibraryFieldOptionEnum;
 import application.core.library.field.types.FieldTypeEnum;
@@ -109,22 +109,25 @@ public class FieldController {
                 main.printMessage("Empty field name");
                 return;
             }
-            main.getTreeController().addItem(dto);
+            main.getTreeController().addItem(dto, true);
         } catch (ClassCastException e) {
-
+            if (main.getTreeController().tree.getRoot() == null) {
+                main.printMessage("Empty root item");
+                return;
+            }
             String     parentName = (String) fieldTypes.getValue();
             JSONObject json       = refs.get(parentName);
             FieldDTO   parentDTO  = new FieldDTO(null, parentName, FieldTypeEnum.REFERENCE);
             parentDTO.setRef(parentName);
 
-            main.getTreeController().addItem(parentDTO);
+            main.getTreeController().addItem(parentDTO, false);
 
             // iterate object to set children
             for (String key : json.keySet()) {
                 referenceTreeAppender(json.getJSONObject(key));
             }
         }
-        //create dto form field data
+        //create dto form field dataCreator
 
 
         //store dto in some local storage?
@@ -138,9 +141,9 @@ public class FieldController {
     private void referenceTreeAppender(JSONObject object) {
         for (String s : object.keySet()) {
             if (s.equals("$params")) {
-                JSONObject obj = object.getJSONObject(s);
-                FieldDTO   dto = Serializable.deserialize(obj, FieldDTO.class);
-                main.getTreeController().addItem(dto);
+                JSONObject             obj  = object.getJSONObject(s);
+                FieldDTO               dto  = Serializable.deserialize(obj, FieldDTO.class);
+                main.getTreeController().addItem(dto, false);
             } else {
                 referenceTreeAppender(object.getJSONObject(s));
             }

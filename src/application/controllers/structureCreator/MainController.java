@@ -1,4 +1,4 @@
-package application.controllers;
+package application.controllers.structureCreator;
 
 import application.App;
 import application.core.utils.Dir;
@@ -14,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.net.URL;
